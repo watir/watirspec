@@ -14,9 +14,9 @@ module WatirSpec
       def report
         gs = WatirSpec.implementation.matching_guards_in(guards)
         print "\n\nWatirSpec guards for this implementation: "
-        
+
         if gs.empty?
-         puts "none."
+          puts "none."
         else
           puts
           gs.each do |guard|
@@ -47,9 +47,18 @@ module WatirSpec
     end
 
     def bug(key, *impls)
-      Guards.record :bug, impls, :file => caller.first, :key => key
+      data = {:file => caller.first, :key => key}
+      Guards.record :bug, impls, data
       return yield if WatirSpec.unguarded?
-      yield unless WatirSpec.implementation.matches_guard?(impls)
+      if respond_to?(:pending)
+        pending "bug - #{data.inspect}" do
+          yield
+        end
+      else
+        data[:notice] = "make this guard more specific by moving it into an example"
+        yield unless WatirSpec.implementation.matches_guard?(impls) # for backwards compatibility when "describe" or "it" block
+                                                                    # is guarded instead of a more specific statements from the example itself
+      end
     end
   end
 end
