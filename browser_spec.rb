@@ -130,6 +130,10 @@ describe "Browser" do
       browser.execute_script("document.getElementById('rspec').innerHTML = 'javascript text'")
       browser.pre(:id, 'rspec').text.should == "javascript text"
     end
+    it "should return value after executing the script" do
+      browser.execute_script("2+2").to_i.should == 4
+      browser.execute_script("null").should == nil
+    end
   end
 
   describe "#back and #forward" do
