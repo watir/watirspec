@@ -114,24 +114,23 @@ describe "Browser" do
       lambda { browser.goto("data:text/html;content-type=utf-8,foobar") }.should_not raise_error
     end
 
-    compliant_on(:firefox) do
+    compliant_on [:webdriver, :firefox] do
       it "goes to internal Firefox URL 'about:mozilla' without raising errors" do
         lambda { browser.goto("about:mozilla") }.should_not raise_error
       end
     end
 
-    compliant_on(:opera) do
+    compliant_on [:webdriver, :opera] do
       it "goes to internal Opera URL 'opera:config' without raising errors" do
         lambda { browser.goto("opera:config") }.should_not raise_error
       end
     end
 
-    compliant_on(:chrome) do
+    compliant_on [:webdriver, :chrome] do
       it "goes to internal Chrome URL 'chrome://settings/browser' without raising errors" do
         lambda { browser.goto("chrome://settings/browser") }.should_not raise_error
       end
     end
-
 
     it "updates the page when location is changed with setTimeout + window.location" do
       browser.goto(WatirSpec.files + "/timeout_window_location.html")
