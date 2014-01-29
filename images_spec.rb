@@ -17,7 +17,7 @@ describe "Images" do
 
   describe "#length" do
     it "returns the number of images" do
-      expect(browser.images.length).to eq 10
+      expect(browser.images.length).to eq 11
     end
   end
 
