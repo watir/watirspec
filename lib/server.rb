@@ -78,7 +78,7 @@ module WatirSpec
         s = TCPServer.new(@host, port)
         s.close
         true
-      rescue *SOCKET_ERRORS
+      rescue TypeError, *SOCKET_ERRORS
         false
       end
 
