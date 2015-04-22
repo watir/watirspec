@@ -9,6 +9,11 @@ describe "Table" do
 
   # Exists
   describe "#exists?" do
+
+    it "finds list of matching elements by text" do
+      expect(browser.elements(text: 'March 2008').length).to eq 1
+    end
+
     it "returns true if the table exists" do
       expect(browser.table(:id, 'axis_example')).to exist
       expect(browser.table(:id, /axis_example/)).to exist
