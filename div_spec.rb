@@ -14,8 +14,8 @@ describe "Div" do
       expect(browser.div(:id, /header/)).to exist
       expect(browser.div(:title, "Header and primary navigation")).to exist
       expect(browser.div(:title, /Header and primary navigation/)).to exist
-      expect(browser.div(:text, "This is a footer.")).to exist
-      expect(browser.div(:text, /This is a footer\./)).to exist
+      expect(browser.div(:text, "Closing Remarks:")).to exist
+      expect(browser.div(:text, /Closing Remarks:/)).to exist
       expect(browser.div(:class, "profile")).to exist
       expect(browser.div(:class, /profile/)).to exist
       expect(browser.div(:index, 0)).to exist
@@ -117,9 +117,9 @@ describe "Div" do
 
   describe "#text" do
     it "returns the text of the div" do
-      expect(browser.div(:id, "footer").text.strip).to eq "This is a footer."
-      expect(browser.div(:title, "Closing remarks").text.strip).to eq "This is a footer."
-      expect(browser.div(:xpath, "//div[@id='footer']").text.strip).to eq "This is a footer."
+      expect(browser.div(:id, "footer").text.strip).to eq "Closing Remarks: This is a footer."
+      expect(browser.div(:title, "Closing remarks").text.strip).to eq "Closing Remarks: This is a footer."
+      expect(browser.div(:xpath, "//div[@id='footer']").text.strip).to eq "Closing Remarks: This is a footer."
     end
 
     it "returns an empty string if the element exists but contains no text" do
