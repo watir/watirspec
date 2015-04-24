@@ -12,8 +12,8 @@ describe "Span" do
     it "returns true if the 'span' exists" do
       expect(browser.span(:id, "lead")).to exist
       expect(browser.span(:id, /lead/)).to exist
-      expect(browser.span(:text, "Dubito, ergo cogito, ergo sum.")).to exist
-      expect(browser.span(:text, /Dubito, ergo cogito, ergo sum/)).to exist
+      expect(browser.span(:text, "This is a footer.")).to exist
+      expect(browser.span(:text, /This is a footer\./)).to exist
       expect(browser.span(:class, "lead")).to exist
       expect(browser.span(:class, /lead/)).to exist
       expect(browser.span(:index, 0)).to exist
