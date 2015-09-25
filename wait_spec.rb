@@ -170,7 +170,7 @@ not_compliant_on %i(webdriver safari) do
         end
       end
 
-      deviates_on :watir_classic do
+      not_compliant :watir_classic do
         it "times out when not given a block" do
           expect { browser.button(id: 'btn').when_enabled(1).click }.to raise_error(Watir::Wait::TimeoutError,
             /^timed out after 1 seconds, waiting for (\{:id=>"btn", :tag_name=>\["button"\]\}|\{:tag_name=>\["button"\], :id=>"btn"\}) to become enabled$/
