@@ -11,13 +11,15 @@ describe "Frame" do
     browser.goto(WatirSpec.url_for("frames.html"))
   end
 
-  it "handles crossframe javascript" do
-    browser.goto WatirSpec.url_for("frames.html", needs_server: true)
+  not_compliant_on :no_server do
+    it "handles crossframe javascript" do
+      browser.goto WatirSpec.url_for("frames.html", needs_server: true)
 
-    expect(browser.frame(id: "frame_1").text_field(name: 'senderElement').value).to eq 'send_this_value'
-    expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'old_value'
-    browser.frame(id: "frame_1").button(id: 'send').click
-    expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'send_this_value'
+      expect(browser.frame(id: "frame_1").text_field(name: 'senderElement').value).to eq 'send_this_value'
+      expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'old_value'
+      browser.frame(id: "frame_1").button(id: 'send').click
+      expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'send_this_value'
+    end
   end
 
   describe "#exist?" do

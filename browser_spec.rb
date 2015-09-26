@@ -102,10 +102,12 @@ describe "Browser" do
       expect(browser.text).to include("Dubito, ergo cogito, ergo sum.")
     end
 
-    it "returns the text also if the content-type is text/plain" do
-      # more specs for text/plain? what happens if we call other methods?
-      browser.goto(WatirSpec.url_for("plain_text", needs_server: true))
-      expect(browser.text.strip).to eq 'This is text/plain'
+    not_compliant_on :no_server do
+      it "returns the text also if the content-type is text/plain" do
+        # more specs for text/plain? what happens if we call other methods?
+        browser.goto(WatirSpec.url_for("plain_text", needs_server: true))
+        expect(browser.text.strip).to eq 'This is text/plain'
+      end
     end
 
     it "returns text of top most browsing context" do
