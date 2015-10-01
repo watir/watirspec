@@ -124,9 +124,9 @@ not_compliant_on %i(webdriver safari) do
       it "responds to Element methods" do
         decorator = browser.div.when_present
 
-        decorator.should respond_to(:exist?)
-        decorator.should respond_to(:present?)
-        decorator.should respond_to(:click)
+        expect(decorator).to respond_to(:exist?)
+        expect(decorator).to respond_to(:present?)
+        expect(decorator).to respond_to(:click)
       end
 
       it "delegates present? to element" do
@@ -181,9 +181,9 @@ not_compliant_on %i(webdriver safari) do
       it "responds to Element methods" do
         decorator = browser.button.when_enabled
 
-        decorator.should respond_to(:exist?)
-        decorator.should respond_to(:present?)
-        decorator.should respond_to(:click)
+        expect(decorator).to respond_to(:exist?)
+        expect(decorator).to respond_to(:present?)
+        expect(decorator).to respond_to(:click)
       end
 
       it "delegates enabled? to element" do
