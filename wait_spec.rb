@@ -147,7 +147,7 @@ not_compliant_on %i(webdriver safari) do
         browser.a(id: 'enable_btn').click
         browser.button(id: 'btn').when_enabled(2) { called = true }
 
-       expect(called).to be true
+        expect(called).to be true
       end
 
       it "invokes subsequent method calls when the element becomes enabled" do
@@ -162,20 +162,16 @@ not_compliant_on %i(webdriver safari) do
         expect { browser.button(id: 'btn').when_enabled(1) {}}.to raise_error(Watir::Wait::TimeoutError)
       end
 
-      not_compliant_on :watir_classic do
-        it "times out when not given a block" do
-          expect { browser.button(id: 'btn').when_enabled(1).click }.to raise_error(Watir::Wait::TimeoutError,
-            /^timed out after 1 seconds, waiting for (\{:id=>"btn", :tag_name=>"button"\}|\{:tag_name=>"button", :id=>"btn"\}) to become enabled$/
-          )
-        end
+      it "times out when not given a block" do
+        expect { browser.button(id: 'btn').when_enabled(1).click }.to raise_error(Watir::Wait::TimeoutError,
+          /^timed out after 1 seconds, waiting for (\{:id=>"btn", :tag_name=>"button"\}|\{:tag_name=>"button", :id=>"btn"\}) to become enabled$/
+        )
       end
 
-      not_compliant_on :watir_classic do
-        it "times out when not given a block" do
-          expect { browser.button(id: 'btn').when_enabled(1).click }.to raise_error(Watir::Wait::TimeoutError,
-            /timed out after 1 seconds, waiting for {:id=>"btn", :tag_name=>"button"} to become enabled$/
-          )
-        end
+      it "times out when not given a block" do
+        expect { browser.button(id: 'btn').when_enabled(1).click }.to raise_error(Watir::Wait::TimeoutError,
+          /timed out after 1 seconds, waiting for {:id=>"btn", :tag_name=>"button"} to become enabled$/
+        )
       end
 
       it "responds to Element methods" do
