@@ -78,8 +78,10 @@ describe "Dl" do
       expect(browser.dl(id: "experience-list").text).to include("11 years")
     end
 
-    it "returns an empty string if the element exists but contains no text" do
-      expect(browser.dl(id: 'noop').text).to eq ""
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853500", :edge do
+      it "returns an empty string if the element exists but contains no text" do
+        expect(browser.dl(id: 'noop').text).to eq ""
+      end
     end
 
     it "raises UnknownObjectException if the element does not exist" do

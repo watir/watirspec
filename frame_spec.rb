@@ -58,13 +58,17 @@ describe "Frame" do
       expect(browser.frame(xpath: "//frame[@id='no_such_id']")).to_not exist
     end
 
-    bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
-      it "handles nested frames" do
-        browser.goto(WatirSpec.url_for("nested_frames.html"))
+    # W3C appears to say that browser.title should error out if you replace the previous top level browsing context
+    # TODO - find a better spec for "handles nested frames"
+    not_compliant_on :edge do
+      bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
+        it "handles nested frames" do
+          browser.goto(WatirSpec.url_for("nested_frames.html"))
 
-        browser.frame(id: "two").frame(id: "three").link(id: "four").click
+          browser.frame(id: "two").frame(id: "three").link(id: "four").click
 
-        Wait.until{ browser.title == "definition_lists" }
+          Wait.until{ browser.title == "definition_lists" }
+        end
       end
     end
 

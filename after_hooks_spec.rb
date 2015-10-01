@@ -85,28 +85,10 @@ describe "Browser::AfterHooks" do
       end
     end
 
-    bug "https://github.com/detro/ghostdriver/issues/20", :phantomjs do
-      not_compliant_on %i(webdriver safari) do
-        it "runs after_hooks after Alert#ok" do
-          browser.goto(WatirSpec.url_for("alerts.html"))
-          @page_after_hook = Proc.new { @yield = browser.title == "Alerts" }
-          browser.after_hooks.add @page_after_hook
-
-          browser.after_hooks.without do
-            not_compliant_on :watir_classic do
-              browser.button(id: 'alert').click
-            end
-            deviates_on :watir_classic do
-              browser.button(id: 'alert').click_no_wait
-            end
-          end
-
-          browser.alert.ok
-          expect(@yield).to be true
-        end
-
-        bug "https://code.google.com/p/chromedriver/issues/detail?id=26", [:chrome, :macosx] do
-          it "runs after_hooks after Alert#close" do
+    bug "https://connect.microsoft.com/IE/feedback/details/1850030/", :edge do
+      bug "https://github.com/detro/ghostdriver/issues/20", :phantomjs do
+        not_compliant_on %i(webdriver safari) do
+          it "runs after_hooks after Alert#ok" do
             browser.goto(WatirSpec.url_for("alerts.html"))
             @page_after_hook = Proc.new { @yield = browser.title == "Alerts" }
             browser.after_hooks.add @page_after_hook
@@ -120,8 +102,28 @@ describe "Browser::AfterHooks" do
               end
             end
 
-            browser.alert.close
+            browser.alert.ok
             expect(@yield).to be true
+          end
+
+          bug "https://code.google.com/p/chromedriver/issues/detail?id=26", [:chrome, :macosx] do
+            it "runs after_hooks after Alert#close" do
+              browser.goto(WatirSpec.url_for("alerts.html"))
+              @page_after_hook = Proc.new { @yield = browser.title == "Alerts" }
+              browser.after_hooks.add @page_after_hook
+
+              browser.after_hooks.without do
+                not_compliant_on :watir_classic do
+                  browser.button(id: 'alert').click
+                end
+                deviates_on :watir_classic do
+                  browser.button(id: 'alert').click_no_wait
+                end
+              end
+
+              browser.alert.close
+              expect(@yield).to be true
+            end
           end
         end
 
@@ -132,6 +134,7 @@ describe "Browser::AfterHooks" do
           browser.goto url
           expect { browser.button(id: "alert").click }.to raise_error(Selenium::WebDriver::Error::UnhandledAlertError)
 
+          # Firefox closes alert when raising exception
           not_compliant_on :firefox do
             browser.alert.ok
           end

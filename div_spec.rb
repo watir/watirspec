@@ -126,8 +126,10 @@ describe "Div" do
       expect(browser.div(index: 0).text.strip).to eq ""
     end
 
-    it "returns an empty string if the div is hidden" do
-      expect(browser.div(id: 'hidden').text).to eq ""
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853452", :edge do
+      it "returns an empty string if the div is hidden" do
+        expect(browser.div(id: 'hidden').text).to eq ""
+      end
     end
 
     it "raises UnknownObjectException if the element does not exist" do
@@ -163,11 +165,13 @@ describe "Div" do
     end
   end
 
-  not_compliant_on %i(webdriver iphone), %i(webdriver safari) do
-    describe "#double_click" do
-      it "fires the ondblclick event" do
-        browser.div(id: 'html_test').double_click
-        expect(messages).to include('double clicked')
+  not_compliant_on %i(webdriver iphone) do
+    bug "https://connect.microsoft.com/IE/feedback/details/1850023/", :edge do
+      describe "#double_click" do
+        it "fires the ondblclick event" do
+          browser.div(id: 'html_test').double_click
+          expect(messages).to include('double clicked')
+        end
       end
     end
 

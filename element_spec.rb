@@ -314,11 +314,13 @@ describe "Element" do
           expect(events).to eq 6
         end
 
-        it 'performs arbitrary list of key combinations' do
-          receiver.send_keys 'foo'
-          receiver.send_keys [@c, 'a'], [@c, 'x']
-          expect(receiver.value).to be_empty
-          expect(events).to eq 7
+        bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853566", :edge do
+          it 'performs arbitrary list of key combinations' do
+            receiver.send_keys 'foo'
+            receiver.send_keys [@c, 'a'], [@c, 'x']
+            expect(receiver.value).to be_empty
+            expect(events).to eq 7
+          end
         end
 
         it 'supports combination of strings and arrays' do

@@ -6,7 +6,10 @@ describe "Browser" do
   describe "#exists?" do
     after do
       browser.window(index: 0).use
-      browser.windows[1..-1].each(&:close)
+
+      not_compliant_on :edge do
+        browser.windows[1..-1].each(&:close)
+      end
     end
 
     it "returns true if we are at a page" do
@@ -22,11 +25,13 @@ describe "Browser" do
       expect(browser.exists?).to be false
     end
 
-    not_compliant_on(:safariwatir) do
-      it "returns false after Browser#close" do
-        b = WatirSpec.new_browser
-        b.close
-        expect(b).to_not exist
+    bug "https://connect.microsoft.com/IE/feedback/details/1856881/", :edge do
+      not_compliant_on(:safariwatir) do
+        it "returns false after Browser#close" do
+          b = WatirSpec.new_browser
+          b.close
+          expect(b).to_not exist
+        end
       end
     end
   end
@@ -110,10 +115,12 @@ describe "Browser" do
       end
     end
 
-    it "returns text of top most browsing context" do
-      browser.goto(WatirSpec.url_for("nested_iframes.html"))
-      browser.iframe(id: 'two').h3.exists?
-      expect(browser.text).to eq 'Top Layer'
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853500", :edge do
+      it "returns text of top most browsing context" do
+        browser.goto(WatirSpec.url_for("nested_iframes.html"))
+        browser.iframe(id: 'two').h3.exists?
+        expect(browser.text).to eq 'Top Layer'
+      end
     end
   end
 
@@ -144,26 +151,28 @@ describe "Browser" do
     end
   end
 
-  describe ".start" do
-    not_compliant_on %i(webdriver, safariwatir) do
-      it "goes to the given URL and return an instance of itself" do
-        browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
+  bug "https://connect.microsoft.com/IE/feedback/details/1850030/", :edge do
+    describe ".start" do
+      not_compliant_on %i(webdriver, safariwatir) do
+        it "goes to the given URL and return an instance of itself" do
+          browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
 
-        expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
-    end
 
-    # we need to specify what browser to use
-    deviates_on(:webdriver) do
-      it "goes to the given URL and return an instance of itself" do
-        driver, args = WatirSpec.implementation.browser_args
-        browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
+      # we need to specify what browser to use
+      deviates_on(:webdriver) do
+        it "goes to the given URL and return an instance of itself" do
+          driver, args = WatirSpec.implementation.browser_args
+          browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
 
-        expect(browser).to be_instance_of(Watir::Browser)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(Watir::Browser)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
     end
   end
