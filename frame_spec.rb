@@ -11,13 +11,15 @@ describe "Frame" do
     browser.goto(WatirSpec.url_for("frames.html"))
   end
 
-  it "handles crossframe javascript" do
-    browser.goto WatirSpec.url_for("frames.html", needs_server: true)
+  not_compliant_on :no_server do
+    it "handles crossframe javascript" do
+      browser.goto WatirSpec.url_for("frames.html", needs_server: true)
 
-    expect(browser.frame(id: "frame_1").text_field(name: 'senderElement').value).to eq 'send_this_value'
-    expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'old_value'
-    browser.frame(id: "frame_1").button(id: 'send').click
-    expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'send_this_value'
+      expect(browser.frame(id: "frame_1").text_field(name: 'senderElement').value).to eq 'send_this_value'
+      expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'old_value'
+      browser.frame(id: "frame_1").button(id: 'send').click
+      expect(browser.frame(id: "frame_2").text_field(name: 'recieverElement').value).to eq 'send_this_value'
+    end
   end
 
   describe "#exist?" do
@@ -56,13 +58,17 @@ describe "Frame" do
       expect(browser.frame(xpath: "//frame[@id='no_such_id']")).to_not exist
     end
 
-    bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
-      it "handles nested frames" do
-        browser.goto(WatirSpec.url_for("nested_frames.html", needs_server: true))
+    # W3C appears to say that browser.title should error out if you replace the previous top level browsing context
+    # TODO - find a better spec for "handles nested frames"
+    not_compliant_on :edge do
+      bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
+        it "handles nested frames" do
+          browser.goto(WatirSpec.url_for("nested_frames.html"))
 
-        browser.frame(id: "two").frame(id: "three").link(id: "four").click
+          browser.frame(id: "two").frame(id: "three").link(id: "four").click
 
-        Wait.until{ browser.title == "definition_lists" }
+          Wait.until{ browser.title == "definition_lists" }
+        end
       end
     end
 

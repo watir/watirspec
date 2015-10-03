@@ -314,11 +314,13 @@ describe "Element" do
           expect(events).to eq 6
         end
 
-        it 'performs arbitrary list of key combinations' do
-          receiver.send_keys 'foo'
-          receiver.send_keys [@c, 'a'], [@c, 'x']
-          expect(receiver.value).to be_empty
-          expect(events).to eq 7
+        bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853566", :edge do
+          it 'performs arbitrary list of key combinations' do
+            receiver.send_keys 'foo'
+            receiver.send_keys [@c, 'a'], [@c, 'x']
+            expect(receiver.value).to be_empty
+            expect(events).to eq 7
+          end
         end
 
         it 'supports combination of strings and arrays' do
@@ -341,7 +343,7 @@ describe "Element" do
 
   describe '#inner_html' do
     it 'returns inner HTML code of element' do
-      browser.goto WatirSpec.url_for('inner_outer.html', needs_server: true)
+      browser.goto WatirSpec.url_for('inner_outer.html')
       div = browser.div(id: 'foo')
       expect(div.inner_html).to eq('<a href="#">hello</a>')
     end
@@ -349,7 +351,7 @@ describe "Element" do
 
   describe '#outer_html' do
     it 'returns outer (inner + element itself) HTML code of element' do
-      browser.goto WatirSpec.url_for('inner_outer.html', needs_server: true)
+      browser.goto WatirSpec.url_for('inner_outer.html')
       div = browser.div(id: 'foo')
       expect(div.outer_html).to eq('<div id="foo"><a href="#">hello</a></div>')
     end

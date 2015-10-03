@@ -6,7 +6,10 @@ describe "Browser" do
   describe "#exists?" do
     after do
       browser.window(index: 0).use
-      browser.windows[1..-1].each(&:close)
+
+      not_compliant_on :edge do
+        browser.windows[1..-1].each(&:close)
+      end
     end
 
     it "returns true if we are at a page" do
@@ -22,11 +25,13 @@ describe "Browser" do
       expect(browser.exists?).to be false
     end
 
-    not_compliant_on(:safariwatir) do
-      it "returns false after Browser#close" do
-        b = WatirSpec.new_browser
-        b.close
-        expect(b).to_not exist
+    bug "https://connect.microsoft.com/IE/feedback/details/1856881/", :edge do
+      not_compliant_on(:safariwatir) do
+        it "returns false after Browser#close" do
+          b = WatirSpec.new_browser
+          b.close
+          expect(b).to_not exist
+        end
       end
     end
   end
@@ -102,77 +107,82 @@ describe "Browser" do
       expect(browser.text).to include("Dubito, ergo cogito, ergo sum.")
     end
 
-    it "returns the text also if the content-type is text/plain" do
-      # more specs for text/plain? what happens if we call other methods?
-      browser.goto(WatirSpec.url_for("plain_text", needs_server: true))
-      expect(browser.text.strip).to eq 'This is text/plain'
+    not_compliant_on :no_server do
+      it "returns the text also if the content-type is text/plain" do
+        # more specs for text/plain? what happens if we call other methods?
+        browser.goto(WatirSpec.url_for("plain_text", needs_server: true))
+        expect(browser.text.strip).to eq 'This is text/plain'
+      end
     end
 
-    it "returns text of top most browsing context" do
-      browser.goto(WatirSpec.url_for("nested_iframes.html"))
-      browser.iframe(id: 'two').h3.exists?
-      expect(browser.text).to eq 'Top Layer'
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853500", :edge do
+      it "returns text of top most browsing context" do
+        browser.goto(WatirSpec.url_for("nested_iframes.html"))
+        browser.iframe(id: 'two').h3.exists?
+        expect(browser.text).to eq 'Top Layer'
+      end
     end
   end
 
   describe "#url" do
     it "returns the current url" do
-      browser.goto(WatirSpec.url_for("non_control_elements.html", needs_server: true))
-      expect(browser.url).to eq WatirSpec.url_for("non_control_elements.html", needs_server: true)
+      browser.goto(WatirSpec.url_for("non_control_elements.html"))
+      expect(browser.url).to eq WatirSpec.url_for("non_control_elements.html")
     end
 
     it "always returns top url" do
-      browser.goto(WatirSpec.url_for("frames.html", needs_server: true))
+      browser.goto(WatirSpec.url_for("frames.html"))
       browser.frame.body.exists? # switches to frame
-      expect(browser.url).to eq WatirSpec.url_for("frames.html", needs_server: true)
+      expect(browser.url).to eq WatirSpec.url_for("frames.html")
     end
   end
 
   describe "#title" do
     it "returns the current title" do
-      browser.goto(WatirSpec.url_for("non_control_elements.html", needs_server: true))
+      browser.goto(WatirSpec.url_for("non_control_elements.html"))
       expect(browser.title).to eq "Non-control elements"
     end
 
     it "always returns top title" do
-      browser.goto(WatirSpec.url_for("frames.html", needs_server: true))
+      browser.goto(WatirSpec.url_for("frames.html"))
       browser.element(tag_name: 'title').text
       browser.frame.body.exists? # switches to frame
       expect(browser.title).to eq "Frames"
     end
   end
 
-  describe ".start" do
-    not_compliant_on %i(webdriver, safariwatir) do
-      it "goes to the given URL and return an instance of itself" do
-        browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
+  bug "https://connect.microsoft.com/IE/feedback/details/1850030/", :edge do
+    describe ".start" do
+      not_compliant_on %i(webdriver, safariwatir) do
+        it "goes to the given URL and return an instance of itself" do
+          browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
 
-        expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
-    end
 
-    # we need to specify what browser to use
-    deviates_on(:webdriver) do
-      it "goes to the given URL and return an instance of itself" do
-        driver, args = WatirSpec.implementation.browser_args
-        browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
+      # we need to specify what browser to use
+      deviates_on(:webdriver) do
+        it "goes to the given URL and return an instance of itself" do
+          driver, args = WatirSpec.implementation.browser_args
+          browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
 
-        expect(browser).to be_instance_of(Watir::Browser)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(Watir::Browser)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
     end
   end
 
   describe "#goto" do
-    not_compliant_on %i(webdriver internet_explorer) do
+    not_compliant_on %i(webdriver internet_explorer), :no_server do
       it "adds http:// to URLs with no URL scheme specified" do
         url = WatirSpec.host[%r{http://(.*)}, 1]
         expect(url).to_not be_nil
         browser.goto(url)
-        #expect(browser.url).to =~ %r[http://#{url}/?]
         expect(browser.url).to match(%r[http://#{url}/?])
       end
     end
@@ -267,9 +277,9 @@ describe "Browser" do
   not_compliant_on %i(webdriver safari) do
     describe "#back and #forward" do
       it "goes to the previous page" do
-        browser.goto WatirSpec.url_for("non_control_elements.html", needs_server: true)
+        browser.goto WatirSpec.url_for("non_control_elements.html")
         orig_url = browser.url
-        browser.goto(WatirSpec.url_for("tables.html", needs_server: true))
+        browser.goto WatirSpec.url_for("tables.html")
         new_url = browser.url
         expect(orig_url).to_not eq new_url
         browser.back
@@ -278,9 +288,9 @@ describe "Browser" do
 
       it "goes to the next page" do
         urls = []
-        browser.goto WatirSpec.url_for("non_control_elements.html", needs_server: true)
+        browser.goto WatirSpec.url_for("non_control_elements.html")
         urls << browser.url
-        browser.goto WatirSpec.url_for("tables.html", needs_server: true)
+        browser.goto WatirSpec.url_for("tables.html")
         urls << browser.url
 
         browser.back
@@ -295,7 +305,7 @@ describe "Browser" do
                  "forms_with_input_elements.html",
                  "definition_lists.html"
         ].map do |page|
-          browser.goto WatirSpec.url_for(page, needs_server: true)
+          browser.goto WatirSpec.url_for(page)
           browser.url
         end
 
@@ -308,7 +318,7 @@ describe "Browser" do
   end
 
   it "raises UnknownObjectException when trying to access DOM elements on plain/text-page" do
-    browser.goto(WatirSpec.url_for("plain_text", needs_server: true))
+    browser.goto(WatirSpec.url_for("plain_text"))
     expect { browser.div(id: 'foo').id }.to raise_error(Watir::Exception::UnknownObjectException)
   end
 

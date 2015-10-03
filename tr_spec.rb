@@ -36,12 +36,14 @@ describe "TableRow" do
   end
 
   describe "#click" do
-    bug "http://github.com/watir/watir-webdriver/issues/issue/32",
-      %i(webdriver internet_explorer),
-      %i(webdriver chrome) do
-      it "fires the row's onclick event" do
-        browser.tr(id: 'inner_first').click
-        expect(messages).to include('tr')
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1854764", :edge do
+      bug "http://github.com/watir/watir-webdriver/issues/issue/32",
+        %i(webdriver internet_explorer),
+        %i(webdriver chrome) do
+        it "fires the row's onclick event" do
+          browser.tr(id: 'inner_first').click
+          expect(messages).to include('tr')
+        end
       end
     end
   end
@@ -49,9 +51,11 @@ describe "TableRow" do
   describe "#[]" do
     let(:table) { browser.table(id: 'outer') }
 
-    it "returns the nth cell of the row" do
-      expect(table[0][0].text).to eq "Table 1, Row 1, Cell 1"
-      expect(table[2][0].text).to eq "Table 1, Row 3, Cell 1"
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853500", :edge do
+      it "returns the nth cell of the row" do
+        expect(table[0][0].text).to eq "Table 1, Row 1, Cell 1"
+        expect(table[2][0].text).to eq "Table 1, Row 3, Cell 1"
+      end
     end
 
     not_compliant_on :webdriver do #[] returns watir elements (lazy locate)

@@ -31,7 +31,7 @@ module WatirSpec
     end
 
     def files
-      @files ||= "file://#{html}"
+      @files ||= "file:///#{html}"
     end
 
     def host

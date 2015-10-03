@@ -205,9 +205,11 @@ describe "TextField" do
       expect(browser.text_field(name: "new_user_occupation").value).to eq "Developer Append This"
     end
 
-    it "appends multi-byte characters" do
-      browser.text_field(name: "new_user_occupation").append(" ĳĳ")
-      expect(browser.text_field(name: "new_user_occupation").value).to eq "Developer ĳĳ"
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853619", :edge do
+      it "appends multi-byte characters" do
+        browser.text_field(name: "new_user_occupation").append(" ĳĳ")
+        expect(browser.text_field(name: "new_user_occupation").value).to eq "Developer ĳĳ"
+      end
     end
 
     it "raises ObjectReadOnlyException if the object is read only" do
@@ -246,14 +248,18 @@ describe "TextField" do
       expect(browser.text_field(id: "new_user_email").value).to eq 'Hello Cruel World'
     end
 
-    it "is able to set multi-byte characters" do
-      browser.text_field(name: "new_user_occupation").value = "ĳĳ"
-      expect(browser.text_field(name: "new_user_occupation").value).to eq "ĳĳ"
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853619", :edge do
+      it "is able to set multi-byte characters" do
+        browser.text_field(name: "new_user_occupation").value = "ĳĳ"
+        expect(browser.text_field(name: "new_user_occupation").value).to eq "ĳĳ"
+      end
     end
 
-    it "sets the value of a textarea element" do
-      browser.textarea(id: 'delete_user_comment').value = 'Hello Cruel World'
-      expect(browser.textarea(id: "delete_user_comment").value).to eq 'Hello Cruel World'
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853619", :edge do
+      it "sets the value of a textarea element" do
+        browser.textarea(id: 'delete_user_comment').value = 'Hello Cruel World'
+        expect(browser.textarea(id: "delete_user_comment").value).to eq 'Hello Cruel World'
+      end
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
@@ -287,9 +293,11 @@ describe "TextField" do
       expect(browser.form(id: 'new_user').text_field(name: 'new_user_password').value).to eq 'secret'
     end
 
-    it "is able to set multi-byte characters" do
-      browser.text_field(name: "new_user_occupation").set("ĳĳ")
-      expect(browser.text_field(name: "new_user_occupation").value).to eq "ĳĳ"
+    bug "https://connect.microsoft.com/IE/feedbackdetail/view/1853619", :edge do
+      it "is able to set multi-byte characters" do
+        browser.text_field(name: "new_user_occupation").set("ĳĳ")
+        expect(browser.text_field(name: "new_user_occupation").value).to eq "ĳĳ"
+      end
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do

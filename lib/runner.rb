@@ -20,7 +20,7 @@ module WatirSpec
 
     def execute
       load_requires
-      start_server
+      start_server unless ENV['NO_SERVER']
       configure
       add_guard_hook
 

@@ -1,8 +1,8 @@
 require File.expand_path("../spec_helper", __FILE__)
 
 describe 'Alert API' do
-  bug "https://github.com/detro/ghostdriver/issues/20", :phantomjs do
-    not_compliant_on %i(webdriver safari) do
+  bug "https://connect.microsoft.com/IE/feedback/details/1850030/", :edge do
+    bug "https://github.com/detro/ghostdriver/issues/20", :phantomjs do
       before do
         browser.goto WatirSpec.url_for("alerts.html")
       end
