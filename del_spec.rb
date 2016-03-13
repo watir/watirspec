@@ -115,10 +115,12 @@ describe "Del" do
 
   # Other
   describe "#click" do
-    it "fires events" do
-      expect(browser.del(class: 'footer').text).to_not include('Javascript')
-      browser.del(class: 'footer').click
-      expect(browser.del(class: 'footer').text).to include('Javascript')
+    bug "Works individually, but not in test suite", %i(marionette linux) do
+      it "fires events" do
+        expect(browser.del(class: 'footer').text).to_not include('Javascript')
+        browser.del(class: 'footer').click
+        expect(browser.del(class: 'footer').text).to include('Javascript')
+      end
     end
 
     it "raises UnknownObjectException if the del doesn't exist" do

@@ -84,14 +84,15 @@ describe "IFrame" do
       expect(nested_element).to exist
     end
 
+    bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255946", :marionette do
+      bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
+        it "handles nested iframes" do
+          browser.goto(WatirSpec.url_for("nested_iframes.html"))
 
-    bug "https://github.com/detro/ghostdriver/issues/159", :phantomjs do
-      it "handles nested iframes" do
-        browser.goto(WatirSpec.url_for("nested_iframes.html"))
+          browser.iframe(id: "two").iframe(id: "three").link(id: "four").click
 
-        browser.iframe(id: "two").iframe(id: "three").link(id: "four").click
-
-        Wait.until { browser.title == "definition_lists" }
+          Wait.until { browser.title == "definition_lists" }
+        end
       end
     end
 

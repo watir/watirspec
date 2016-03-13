@@ -111,7 +111,7 @@ describe "Div" do
     end
 
     it "raises UnknownObjectException if the element does not exist" do
-      expect {browser.div(id: "no_such_id").style }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.div(id: "no_such_id").style }.to raise_error(Watir::Exception::UnknownObjectException)
     end
   end
 
@@ -164,19 +164,21 @@ describe "Div" do
   end
 
   not_compliant_on %i(webdriver iphone), %i(webdriver safari) do
-    describe "#double_click" do
-      it "fires the ondblclick event" do
-        browser.div(id: 'html_test').double_click
-        expect(messages).to include('double clicked')
+    bug "Interactions Not Yet Supported", :marionette do
+      describe "#double_click" do
+        it "fires the ondblclick event" do
+          browser.div(id: 'html_test').double_click
+          expect(messages).to include('double clicked')
+        end
       end
-    end
 
-    describe "#right_click" do
-      it "fires the oncontextmenu event" do
-        browser.goto(WatirSpec.url_for("right_click.html"))
-        browser.div(id: "click").right_click
-        bug "https://github.com/detro/ghostdriver/issues/125", :phantomjs do
-          expect(messages.first).to eq 'right-clicked'
+      describe "#right_click" do
+        it "fires the oncontextmenu event" do
+          browser.goto(WatirSpec.url_for("right_click.html"))
+          browser.div(id: "click").right_click
+          bug "https://github.com/detro/ghostdriver/issues/125", :phantomjs do
+            expect(messages.first).to eq 'right-clicked'
+          end
         end
       end
     end

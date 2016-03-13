@@ -73,60 +73,66 @@ describe "Option" do
   end
 
   describe "#select" do
-    it "selects the chosen option (page context)" do
-      browser.option(text: "Denmark").select
-      expect(browser.select_list(name: "new_user_country").selected_options.map(&:text)).to eq ["Denmark"]
-    end
+    bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255951", :marionette do
+      context "successful" do
+        it "selects the chosen option (page context)" do
+          browser.option(text: "Denmark").select
+          expect(browser.select_list(name: "new_user_country").selected_options.map(&:text)).to eq ["Denmark"]
+        end
 
-    it "selects the chosen option (select_list context)" do
-      browser.select_list(name: "new_user_country").option(text: "Denmark").select
-      expect(browser.select_list(name: "new_user_country").selected_options.map(&:text)).to eq ["Denmark"]
-    end
+        it "selects the chosen option (select_list context)" do
+          browser.select_list(name: "new_user_country").option(text: "Denmark").select
+          expect(browser.select_list(name: "new_user_country").selected_options.map(&:text)).to eq ["Denmark"]
+        end
 
-    it "selects the option when found by text (page context)" do
-      browser.option(text: 'Sweden').select
-      expect(browser.option(text: 'Sweden')).to be_selected
-    end
+        it "selects the option when found by text (page context)" do
+          browser.option(text: 'Sweden').select
+          expect(browser.option(text: 'Sweden')).to be_selected
+        end
 
-    it "selects the option when found by text (select_list context)" do
-      browser.select_list(name: 'new_user_country').option(text: 'Sweden').select
-      expect(browser.select_list(name: 'new_user_country').option(text: 'Sweden')).to be_selected
-    end
+        it "selects the option when found by text (select_list context)" do
+          browser.select_list(name: 'new_user_country').option(text: 'Sweden').select
+          expect(browser.select_list(name: 'new_user_country').option(text: 'Sweden')).to be_selected
+        end
 
-    # there's no onclick event for Option in IE / WebKit
-    # http://msdn.microsoft.com/en-us/library/ms535877(VS.85).aspx
-    compliant_on :firefox do
-      it "fires the onclick event (page context)" do
-        browser.option(text: "Username 3").select
-        expect(browser.textarea(id: 'delete_user_comment').value).to eq 'Don\'t do it!'
+        # there's no onclick event for Option in IE / WebKit
+        # http://msdn.microsoft.com/en-us/library/ms535877(VS.85).aspx
+        compliant_on :firefox do
+          it "fires the onclick event (page context)" do
+            browser.option(text: "Username 3").select
+            expect(browser.textarea(id: 'delete_user_comment').value).to eq 'Don\'t do it!'
+          end
+        end
+
+        # there's no onclick event for Option in IE / WebKit
+        # http://msdn.microsoft.com/en-us/library/ms535877(VS.85).aspx
+        compliant_on :firefox do
+          it "fires onclick event (select_list context)" do
+            browser.select_list(id: 'delete_user_username').option(text: "Username 3").select
+            expect(browser.textarea(id: 'delete_user_comment').value).to eq 'Don\'t do it!'
+          end
+        end
       end
     end
 
-    # there's no onclick event for Option in IE / WebKit
-    # http://msdn.microsoft.com/en-us/library/ms535877(VS.85).aspx
-    compliant_on :firefox do
-      it "fires onclick event (select_list context)" do
-        browser.select_list(id: 'delete_user_username').option(text: "Username 3").select
-        expect(browser.textarea(id: 'delete_user_comment').value).to eq 'Don\'t do it!'
+    context "exceptions" do
+      it "raises UnknownObjectException if the option does not exist (page context)" do
+        expect { browser.option(text: "no_such_text").select }.to raise_error(Watir::Exception::UnknownObjectException)
+        expect { browser.option(text: /missing/).select }.to raise_error(Watir::Exception::UnknownObjectException)
       end
-    end
 
-    it "raises UnknownObjectException if the option does not exist (page context)" do
-      expect { browser.option(text: "no_such_text").select }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.option(text: /missing/).select }.to raise_error(Watir::Exception::UnknownObjectException)
-    end
+      it "raises UnknownObjectException if the option does not exist (select_list context)" do
+        expect { browser.select_list(name: "new_user_country").option(text: "no_such_text").select }.to raise_error(Watir::Exception::UnknownObjectException)
+        expect { browser.select_list(name: "new_user_country").option(text: /missing/).select }.to raise_error(Watir::Exception::UnknownObjectException)
+      end
 
-    it "raises UnknownObjectException if the option does not exist (select_list context)" do
-      expect { browser.select_list(name: "new_user_country").option(text: "no_such_text").select }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.select_list(name: "new_user_country").option(text: /missing/).select }.to raise_error(Watir::Exception::UnknownObjectException)
-    end
+      it "raises MissingWayOfFindingObjectException when given a bad 'how' (page context)" do
+        expect { browser.option(missing: "Denmark").select }.to raise_error(Watir::Exception::MissingWayOfFindingObjectException)
+      end
 
-    it "raises MissingWayOfFindingObjectException when given a bad 'how' (page context)" do
-      expect { browser.option(missing: "Denmark").select }.to raise_error(Watir::Exception::MissingWayOfFindingObjectException)
-    end
-
-    it "raises MissingWayOfFindingObjectException when given a bad 'how' (select_list context)" do
-      expect { browser.select_list(name: "new_user_country").option(missing: "Denmark").select }.to raise_error(Watir::Exception::MissingWayOfFindingObjectException)
+      it "raises MissingWayOfFindingObjectException when given a bad 'how' (select_list context)" do
+        expect { browser.select_list(name: "new_user_country").option(missing: "Denmark").select }.to raise_error(Watir::Exception::MissingWayOfFindingObjectException)
+      end
     end
   end
 

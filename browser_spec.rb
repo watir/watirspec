@@ -14,19 +14,25 @@ describe "Browser" do
       expect(browser).to exist
     end
 
-    it "returns false if window is closed" do
-      browser.goto WatirSpec.url_for("window_switching.html")
-      browser.a(id: "open").click
-      browser.window(title: "closeable window").use
-      browser.a(id: "close").click
-      expect(browser.exists?).to be false
+    bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1223277", :marionette do
+      it "returns false if window is closed" do
+        browser.goto WatirSpec.url_for("window_switching.html")
+        browser.a(id: "open").click
+        Watir::Wait.until {browser.windows.size > 1}
+        browser.window(title: "closeable window").use
+        browser.a(id: "close").click
+        Watir::Wait.until {browser.windows.size < 2}
+        expect(browser.exists?).to be false
+      end
     end
 
-    not_compliant_on(:safariwatir) do
-      it "returns false after Browser#close" do
-        b = WatirSpec.new_browser
-        b.close
-        expect(b).to_not exist
+    bug "https://github.com/SeleniumHQ/selenium/issues/1150", %i[remote marionette] do
+      not_compliant_on(:safariwatir) do
+        it "returns false after Browser#close" do
+          b = WatirSpec.new_browser
+          b.close
+          expect(b).to_not exist
+        end
       end
     end
   end
@@ -82,7 +88,7 @@ describe "Browser" do
 
   describe "#name" do
     it "returns browser name" do
-      not_compliant_on :watir_classic, :remote, %i(webdriver phantomjs) do
+      not_compliant_on :watir_classic, :marionette, :remote, %i(webdriver phantomjs) do
         expect(browser.name).to eq WatirSpec.implementation.browser_args[0]
       end
 
@@ -96,6 +102,10 @@ describe "Browser" do
 
       deviates_on :remote do
         expect(browser.name).to eq WatirSpec.implementation.browser_args[1][:desired_capabilities].browser_name.to_sym
+      end
+
+      deviates_on :marionette do
+        expect(browser.name).to eq :firefox
       end
     end
   end
@@ -146,26 +156,28 @@ describe "Browser" do
     end
   end
 
-  describe ".start" do
-    not_compliant_on %i(webdriver safariwatir) do
-      it "goes to the given URL and return an instance of itself" do
-        browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
+  bug "https://github.com/SeleniumHQ/selenium/issues/1150", %i[remote marionette] do
+    describe ".start" do
+      not_compliant_on %i(webdriver, safariwatir) do
+        it "goes to the given URL and return an instance of itself" do
+          browser = WatirSpec.implementation.browser_class.start(WatirSpec.url_for("non_control_elements.html"))
 
-        expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(WatirSpec.implementation.browser_class)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
-    end
 
-    # we need to specify what browser to use
-    deviates_on(:webdriver) do
-      it "goes to the given URL and return an instance of itself" do
-        driver, args = WatirSpec.implementation.browser_args
-        browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
+      # we need to specify what browser to use
+      deviates_on(:webdriver) do
+        it "goes to the given URL and return an instance of itself" do
+          driver, args = WatirSpec.implementation.browser_args
+          browser = Watir::Browser.start(WatirSpec.url_for("non_control_elements.html"), driver, args)
 
-        expect(browser).to be_instance_of(Watir::Browser)
-        expect(browser.title).to eq "Non-control elements"
-        browser.close
+          expect(browser).to be_instance_of(Watir::Browser)
+          expect(browser.title).to eq "Non-control elements"
+          browser.close
+        end
       end
     end
   end
@@ -310,9 +322,11 @@ describe "Browser" do
     end
   end
 
-  it "raises UnknownObjectException when trying to access DOM elements on plain/text-page" do
-    browser.goto(WatirSpec.url_for("plain_text"))
-    expect { browser.div(id: 'foo').id }.to raise_error(Watir::Exception::UnknownObjectException)
+  bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255909", :marionette do
+    it "raises UnknownObjectException when trying to access DOM elements on plain/text-page" do
+      browser.goto(WatirSpec.url_for("plain_text"))
+      expect { browser.div(id: 'foo').id }.to raise_error(Watir::Exception::UnknownObjectException)
+    end
   end
 
 end

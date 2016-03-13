@@ -115,10 +115,12 @@ describe "Ins" do
 
   # Other
   describe "#click" do
-    it "fires events" do
-      expect(browser.ins(class: 'footer').text).to_not include('Javascript')
-      browser.ins(class: 'footer').click
-      expect(browser.ins(class: 'footer').text).to include('Javascript')
+    bug "Works individually, but not in test suite", %i(marionette linux) do
+      it "fires events" do
+        expect(browser.ins(class: 'footer').text).to_not include('Javascript')
+        browser.ins(class: 'footer').click
+        expect(browser.ins(class: 'footer').text).to include('Javascript')
+      end
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do

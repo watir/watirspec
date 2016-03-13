@@ -16,6 +16,7 @@ describe 'Alert API' do
           it 'returns text of alert' do
             not_compliant_on :watir_classic do
               browser.button(id: 'alert').click
+              Watir::Wait.until { browser.alert.exists? }
             end
 
             deviates_on :watir_classic do
@@ -127,19 +128,21 @@ describe 'Alert API' do
       end
 
       context 'prompt' do
-        describe '#set' do
-          it 'enters text to prompt' do
-            not_compliant_on :watir_classic do
-              browser.button(id: 'prompt').click
-            end
+        bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255906", :marionette do
+          describe '#set' do
+            it 'enters text to prompt' do
+              not_compliant_on :watir_classic do
+                browser.button(id: 'prompt').click
+              end
 
-            deviates_on :watir_classic do
-              browser.button(id: 'prompt').click_no_wait
-            end
+              deviates_on :watir_classic do
+                browser.button(id: 'prompt').click_no_wait
+              end
 
-            browser.alert.set 'My Name'
-            browser.alert.ok
-            expect(browser.button(id: 'prompt').value).to eq 'My Name'
+              browser.alert.set 'My Name'
+              browser.alert.ok
+              expect(browser.button(id: 'prompt').value).to eq 'My Name'
+            end
           end
         end
       end

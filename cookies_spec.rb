@@ -66,7 +66,7 @@ bug "https://github.com/ariya/phantomjs/issues/13115", :phantomjs do
                    secure: true,
                    expires: expires}
 
-        deviates_on :watir_classic do
+        deviates_on :watir_classic, :marionette do
           # secure cookie can't be accessed running on WatirSpec test server
           options.delete(:secure)
         end
@@ -80,11 +80,14 @@ bug "https://github.com/ariya/phantomjs/issues/13115", :phantomjs do
 
         not_compliant_on :watir_classic do
           expect(cookie[:path]).to eq "/set_cookie"
-          expect(cookie[:secure]).to be true
 
-          expect(cookie[:expires]).to be_kind_of(Time)
-          # a few ms slack
-          expect((cookie[:expires]).to_i).to be_within(2).of(expires.to_i)
+          bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1256007", :marionette do
+            expect(cookie[:secure]).to be true
+
+            expect(cookie[:expires]).to be_kind_of(Time)
+            # a few ms slack
+            expect((cookie[:expires]).to_i).to be_within(2).of(expires.to_i)
+          end
         end
       end
     end

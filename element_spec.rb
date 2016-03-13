@@ -19,7 +19,7 @@ describe "Element" do
 
     it "raises ArgumentError if given the wrong number of arguments" do
       container = double("container").as_null_object
-      expect { Element.new(container, 1,2,3,4) }.to raise_error(ArgumentError)
+      expect { Element.new(container, 1, 2, 3, 4) }.to raise_error(ArgumentError)
       expect { Element.new(container, "foo") }.to raise_error(ArgumentError)
     end
   end
@@ -162,10 +162,12 @@ describe "Element" do
     end
   end
 
-  describe "#focused?" do
-    it "knows if the element is focused" do
-      expect(browser.element(id: 'new_user_first_name')).to be_focused
-      expect(browser.element(id: 'new_user_last_name')).to_not be_focused
+  bug "https://github.com/jgraham/wires/issues/52", :marionette do
+    describe "#focused?" do
+      it "knows if the element is focused" do
+        expect(browser.element(id: 'new_user_first_name')).to be_focused
+        expect(browser.element(id: 'new_user_last_name')).to_not be_focused
+      end
     end
   end
 
@@ -195,7 +197,7 @@ describe "Element" do
     end
 
     it "raises UnknownObjectException exception if the element does not exist" do
-      expect {browser.text_field(id: "no_such_id").visible?}.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: "no_such_id").visible? }.to raise_error(Watir::Exception::UnknownObjectException)
     end
 
     it "raises UnknownObjectException exception if the element is stale" do
@@ -306,25 +308,31 @@ describe "Element" do
     # key combinations probably not ever possible on mobile devices?
     bug "http://code.google.com/p/chromium/issues/detail?id=93879", %i(webdriver chrome), %i(webdriver iphone) do
       not_compliant_on %i(webdriver safari) do
-        it 'performs key combinations' do
-          receiver.send_keys 'foo'
-          receiver.send_keys [@c, 'a']
-          receiver.send_keys :backspace
-          expect(receiver.value).to be_empty
-          expect(events).to eq 6
+        bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255260", :marionette do
+          it 'performs key combinations' do
+            receiver.send_keys 'foo'
+            receiver.send_keys [@c, 'a']
+            receiver.send_keys :backspace
+            expect(receiver.value).to be_empty
+            expect(events).to eq 6
+          end
         end
 
-        it 'performs arbitrary list of key combinations' do
-          receiver.send_keys 'foo'
-          receiver.send_keys [@c, 'a'], [@c, 'x']
-          expect(receiver.value).to be_empty
-          expect(events).to eq 7
+        bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255258", :marionette do
+          it 'performs arbitrary list of key combinations' do
+            receiver.send_keys 'foo'
+            receiver.send_keys [@c, 'a'], [@c, 'x']
+            expect(receiver.value).to be_empty
+            expect(events).to eq 7
+          end
         end
 
-        it 'supports combination of strings and arrays' do
-          receiver.send_keys 'foo', [@c, 'a'], :backspace
-          expect(receiver.value).to be_empty
-          expect(events).to eq 6
+        bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1255258", :marionette do
+          it 'supports combination of strings and arrays' do
+            receiver.send_keys 'foo', [@c, 'a'], :backspace
+            expect(receiver.value).to be_empty
+            expect(events).to eq 6
+          end
         end
       end
     end
