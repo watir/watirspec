@@ -3,11 +3,21 @@ module WatirSpec
   module Runner
 
     module BrowserHelper
-      def browser; @browser; end
+      def browser
+        @browser
+      end
     end
 
     module PersistentBrowserHelper
-      def browser; $browser; end
+      def browser
+        $browser
+      end
+
+      def restart_browser!
+        $browser.close
+        $browser = WatirSpec.new_browser
+        at_exit { $browser.close }
+      end
     end
 
     module MessagesHelper
