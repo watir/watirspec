@@ -212,6 +212,25 @@ not_compliant_on :safari do
         )
       end
     end
+
+    describe "#wait_until_text" do
+      it "waits until the exact String appears" do
+        browser.a(id: 'show_bar').click
+        browser.div(id: 'bar').wait_until_text('bar', 1)
+      end
+
+      it "waits until matching Regexp appears" do
+        browser.a(id: 'show_bar').click
+        browser.div(id: 'bar').wait_until_text(/ba/, 1)
+      end
+
+      it "times out if the text doesn't disappear" do
+        expect { browser.div(id: 'foo').wait_until_text('foobar', 1) }.to raise_error(Watir::Wait::TimeoutError,
+          /^timed out after 1 seconds, waiting for (\{:id=>"foo", :tag_name=>"div"\}|\{:tag_name=>"div", :id=>"foo"\}) text to equal "foobar"$/
+            )
+      end
+    end
+
   end
 
   describe "Watir.default_timeout" do
