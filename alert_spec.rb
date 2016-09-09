@@ -42,7 +42,7 @@ describe 'Alert API' do
           describe '#close' do
             it 'closes alert' do
               browser.button(id: 'alert').click
-              browser.alert.when_present.close
+              browser.alert.close
               expect(browser.alert).to_not exist
             end
           end
@@ -76,7 +76,7 @@ describe 'Alert API' do
         describe '#close' do
           it 'cancels confirm' do
             browser.button(id: 'confirm').click
-            browser.alert.when_present.close
+            browser.alert.close
             expect(browser.button(id: 'confirm').value).to eq "false"
           end
         end

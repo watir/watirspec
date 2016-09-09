@@ -85,7 +85,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(id: "no_such_id").class_name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(id: "no_such_id").class_name }.to raise_unknown_object_exception
     end
   end
 
@@ -99,7 +99,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -113,7 +113,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).name }.to raise_unknown_object_exception
     end
   end
 
@@ -127,7 +127,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).title }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).title }.to raise_unknown_object_exception
     end
   end
 
@@ -137,7 +137,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).type }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).type }.to raise_unknown_object_exception
     end
   end
 
@@ -147,7 +147,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).value}.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).value}.to raise_unknown_object_exception
     end
   end
 
@@ -175,8 +175,8 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio button doesn't exist" do
-      expect { browser.radio(id: "no_such_id").enabled?  }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.radio(xpath: "//input[@id='no_such_id']").enabled?  }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(id: "no_such_id").enabled?  }.to raise_unknown_object_exception
+      expect { browser.radio(xpath: "//input[@id='no_such_id']").enabled?  }.to raise_unknown_object_exception
     end
   end
 
@@ -190,7 +190,7 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio doesn't exist" do
-      expect { browser.radio(index: 1337).disabled? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(index: 1337).disabled? }.to raise_unknown_object_exception
     end
   end
 
@@ -227,8 +227,8 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio button doesn't exist" do
-      expect { browser.radio(name: "no_such_name").set  }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.radio(xpath: "//input[@name='no_such_name']").set  }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(name: "no_such_name").set  }.to raise_unknown_object_exception
+      expect { browser.radio(xpath: "//input[@name='no_such_name']").set  }.to raise_unknown_object_exception
     end
 
     it "raises ObjectDisabledException if the radio is disabled" do
@@ -256,8 +256,8 @@ describe "Radio" do
     end
 
     it "raises UnknownObjectException if the radio button doesn't exist" do
-      expect { browser.radio(id: "no_such_id").set?  }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.radio(xpath: "//input[@id='no_such_id']").set?  }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.radio(id: "no_such_id").set?  }.to raise_unknown_object_exception
+      expect { browser.radio(xpath: "//input[@id='no_such_id']").set?  }.to raise_unknown_object_exception
     end
   end
 

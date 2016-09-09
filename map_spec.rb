@@ -51,8 +51,8 @@ describe "Map" do
     end
 
     it "raises UnknownObjectException if the p doesn't exist" do
-      expect { browser.map(id: "no_such_id").id }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.map(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.map(id: "no_such_id").id }.to raise_unknown_object_exception
+      expect { browser.map(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -66,8 +66,8 @@ describe "Map" do
     end
 
     it "raises UnknownObjectException if the map doesn't exist" do
-      expect { browser.map(id: "no_such_id").name }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.map(index: 1337).name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.map(id: "no_such_id").name }.to raise_unknown_object_exception
+      expect { browser.map(index: 1337).name }.to raise_unknown_object_exception
     end
   end
 
