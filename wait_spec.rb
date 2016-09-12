@@ -132,7 +132,6 @@ not_compliant_on :safari do
         browser.a(id: 'show_bar').click
         expect(browser.div(id: 'bar').when_present.present?).to be true
       end
-
     end
 
     describe "#when_enabled" do
@@ -212,6 +211,20 @@ not_compliant_on :safari do
         )
       end
     end
+
+    describe "#wait_until" do
+      it "it waits until the condition is met" do
+        browser.a(id: 'show_bar').click
+        element = browser.div(id: 'bar')
+        expect{ element.wait_until(5) { |el| el.text == 'bar' } }.to_not raise_exception
+      end
+
+      it "it waits until the condition is not met" do
+        element = browser.div(id: 'bar')
+        browser.a(id: 'show_bar').click
+        expect{ element.wait_while(5) { |el| el.text == ''} }.to_not raise_exception
+      end
+    end
   end
 
   describe "Watir.default_timeout" do
@@ -228,9 +241,7 @@ not_compliant_on :safari do
 
     context "when no timeout is specified" do
       it "is used by Wait#until" do
-        expect {
-          Wait.until { false }
-        }.to raise_error(Watir::Wait::TimeoutError)
+        expect { Wait.until { false } }.to raise_error(Watir::Wait::TimeoutError)
       end
 
       it "is used by Wait#while" do
