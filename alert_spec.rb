@@ -26,7 +26,7 @@ describe 'Alert API' do
 
           it 'returns true if alert is present' do
             browser.button(id: 'alert').click
-            browser.wait_until(10) { browser.alert.exists? }
+            browser.wait_until(timeout: 10) { browser.alert.exists? }
           end
         end
 
@@ -45,21 +45,6 @@ describe 'Alert API' do
               browser.alert.close
               expect(browser.alert).to_not exist
             end
-          end
-        end
-
-        describe 'when_present' do
-          it 'waits until alert is present and goes on' do
-            browser.button(id: 'timeout-alert').click
-            browser.alert.when_present.ok
-
-            expect(browser.alert).to_not exist
-          end
-
-          it 'raises error if alert is not present after timeout' do
-            expect {
-              browser.alert.when_present(0.1).ok
-            }.to raise_error(Watir::Wait::TimeoutError)
           end
         end
       end

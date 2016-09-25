@@ -347,7 +347,7 @@ describe "SelectList" do
     end
 
     it "raises ObjectDisabledException if the option is disabled" do
-      expect { browser.select_list(name: "new_user_languages").select("Russian") }.to raise_error(Watir::Exception::ObjectDisabledException)
+      expect { browser.select_list(name: "new_user_languages").select("Russian") }.to raise_object_disabled_exception
     end
 
     it "raises a TypeError if argument is not a String, Regexp or Numeric" do

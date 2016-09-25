@@ -263,7 +263,7 @@ describe "Button" do
     end
 
     it "raises ObjectDisabledException when clicking a disabled button" do
-      expect { browser.button(value: "Disabled").click }.to raise_error(Watir::Exception::ObjectDisabledException)
+      expect { browser.button(value: "Disabled").click }.to raise_object_disabled_exception
     end
   end
 

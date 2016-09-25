@@ -213,11 +213,11 @@ describe "TextField" do
     end
 
     it "raises ObjectReadOnlyException if the object is read only" do
-      expect { browser.text_field(id: "new_user_code").append("Append This") }.to raise_error(Watir::Exception::ObjectReadOnlyException)
+      expect { browser.text_field(id: "new_user_code").append("Append This") }.to raise_object_read_only_exception
     end
 
     it "raises ObjectDisabledException if the object is disabled" do
-      expect { browser.text_field(name: "new_user_species").append("Append This") }.to raise_error(Watir::Exception::ObjectDisabledException)
+      expect { browser.text_field(name: "new_user_species").append("Append This") }.to raise_object_disabled_exception
     end
 
     it "raises UnknownObjectException if the object doesn't exist" do
@@ -239,7 +239,7 @@ describe "TextField" do
 
     bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1200366", :firefox do
       it "raises ObjectReadOnlyException if the object is read only" do
-        expect { browser.text_field(id: "new_user_code").clear }.to raise_error(Watir::Exception::ObjectReadOnlyException)
+        expect { browser.text_field(id: "new_user_code").clear }.to raise_object_read_only_exception
       end
     end
   end

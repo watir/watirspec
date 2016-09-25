@@ -232,8 +232,8 @@ describe "Radio" do
     end
 
     it "raises ObjectDisabledException if the radio is disabled" do
-      expect { browser.radio(id: "new_user_newsletter_nah").set  }.to raise_error(Watir::Exception::ObjectDisabledException)
-      expect { browser.radio(xpath: "//input[@id='new_user_newsletter_nah']").set  }.to raise_error(Watir::Exception::ObjectDisabledException )
+      expect { browser.radio(id: "new_user_newsletter_nah").set  }.to raise_object_disabled_exception
+      expect { browser.radio(xpath: "//input[@id='new_user_newsletter_nah']").set  }.to raise_object_disabled_exception
     end
   end
 
