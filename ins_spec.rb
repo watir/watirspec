@@ -55,7 +55,7 @@ describe "Ins" do
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do
-      expect { browser.ins(id: 'no_such_id').class_name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.ins(id: 'no_such_id').class_name }.to raise_unknown_object_exception
     end
   end
 
@@ -69,8 +69,8 @@ describe "Ins" do
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do
-      expect { browser.ins(id: "no_such_id").id }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.ins(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.ins(id: "no_such_id").id }.to raise_unknown_object_exception
+      expect { browser.ins(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -84,8 +84,8 @@ describe "Ins" do
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do
-      expect { browser.ins(id: 'no_such_id').title }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.ins(xpath: "//ins[@id='no_such_id']").title }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.ins(id: 'no_such_id').title }.to raise_unknown_object_exception
+      expect { browser.ins(xpath: "//ins[@id='no_such_id']").title }.to raise_unknown_object_exception
     end
   end
 
@@ -99,8 +99,8 @@ describe "Ins" do
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do
-      expect { browser.ins(id: 'no_such_id').text }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.ins(:xpath , "//ins[@id='no_such_id']").text }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.ins(id: 'no_such_id').text }.to raise_unknown_object_exception
+      expect { browser.ins(:xpath , "//ins[@id='no_such_id']").text }.to raise_unknown_object_exception
     end
   end
 
@@ -122,8 +122,8 @@ describe "Ins" do
     end
 
     it "raises UnknownObjectException if the ins doesn't exist" do
-      expect { browser.ins(id: "no_such_id").click }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.ins(title: "no_such_title").click }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.ins(id: "no_such_id").click }.to raise_unknown_object_exception
+      expect { browser.ins(title: "no_such_title").click }.to raise_unknown_object_exception
     end
   end
 

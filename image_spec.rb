@@ -55,7 +55,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).alt }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).alt }.to raise_unknown_object_exception
     end
   end
 
@@ -69,7 +69,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -83,7 +83,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).src }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).src }.to raise_unknown_object_exception
     end
   end
 
@@ -97,7 +97,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).title }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).title }.to raise_unknown_object_exception
     end
   end
 
@@ -113,10 +113,10 @@ describe "Image" do
   # Manipulation methods
   describe "#click" do
     it "raises UnknownObjectException when the image doesn't exist" do
-      expect { browser.image(id: 'missing_attribute').click }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.image(class: 'missing_attribute').click }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.image(src: 'missing_attribute').click }.to raise_error(Watir::Exception::UnknownObjectException)
-      expect { browser.image(alt: 'missing_attribute').click }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(id: 'missing_attribute').click }.to raise_unknown_object_exception
+      expect { browser.image(class: 'missing_attribute').click }.to raise_unknown_object_exception
+      expect { browser.image(src: 'missing_attribute').click }.to raise_unknown_object_exception
+      expect { browser.image(alt: 'missing_attribute').click }.to raise_unknown_object_exception
     end
   end
 
@@ -126,7 +126,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).height }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).height }.to raise_unknown_object_exception
     end
   end
 
@@ -136,7 +136,7 @@ describe "Image" do
     end
 
     it "raises UnknownObjectException if the image doesn't exist" do
-      expect { browser.image(index: 1337).width }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.image(index: 1337).width }.to raise_unknown_object_exception
     end
   end
 
@@ -154,10 +154,10 @@ describe "Image" do
       end
 
       it "raises UnknownObjectException if the image doesn't exist" do
-        expect { browser.image(id: 'no_such_image').loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
-        expect { browser.image(src: 'no_such_image').loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
-        expect { browser.image(alt: 'no_such_image').loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
-        expect { browser.image(index: 1337).loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
+        expect { browser.image(id: 'no_such_image').loaded? }.to raise_unknown_object_exception
+        expect { browser.image(src: 'no_such_image').loaded? }.to raise_unknown_object_exception
+        expect { browser.image(alt: 'no_such_image').loaded? }.to raise_unknown_object_exception
+        expect { browser.image(index: 1337).loaded? }.to raise_unknown_object_exception
       end
     end
   end

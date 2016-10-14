@@ -14,7 +14,7 @@ describe "Element" do
     end
 
     it "raises UnknownObjectException with a sane error message when given a hash of :how => 'what' arguments (non-existing object)" do
-      expect { browser.text_field(index: 100, name: "foo").id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 100, name: "foo").id }.to raise_unknown_object_exception
     end
 
     it "raises ArgumentError if given the wrong number of arguments" do
@@ -105,7 +105,7 @@ describe "Element" do
     end
 
     it "finds several elements from an element's subtree" do
-      expect(browser.fieldset.elements(xpath: ".//label").length).to eq 20
+      expect(browser.fieldset.elements(xpath: ".//label").length).to eq 21
     end
   end
 
@@ -195,7 +195,7 @@ describe "Element" do
     end
 
     it "raises UnknownObjectException exception if the element does not exist" do
-      expect {browser.text_field(id: "no_such_id").visible?}.to raise_error(Watir::Exception::UnknownObjectException)
+      expect {browser.text_field(id: "no_such_id").visible?}.to raise_unknown_object_exception
     end
 
     it "raises UnknownObjectException exception if the element is stale" do
@@ -205,7 +205,7 @@ describe "Element" do
       allow(browser.driver).to receive(:find_element).with(:id, 'new_user_email') { wd_element }
       browser.refresh
 
-      expect { browser.text_field(id: 'new_user_email').visible? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: 'new_user_email').visible? }.to raise_unknown_object_exception
     end
 
     it "returns true if the element has style='visibility: visible' even if parent has style='visibility: hidden'" do

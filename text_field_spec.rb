@@ -88,7 +88,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -98,7 +98,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).name }.to raise_unknown_object_exception
     end
   end
 
@@ -108,7 +108,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).title }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).title }.to raise_unknown_object_exception
     end
   end
 
@@ -126,7 +126,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).type }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).type }.to raise_unknown_object_exception
     end
   end
 
@@ -138,7 +138,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).value }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).value }.to raise_unknown_object_exception
     end
   end
 
@@ -165,7 +165,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(id: "no_such_id").enabled? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: "no_such_id").enabled? }.to raise_unknown_object_exception
     end
   end
 
@@ -179,7 +179,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(index: 1337).disabled? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(index: 1337).disabled? }.to raise_unknown_object_exception
     end
   end
 
@@ -196,7 +196,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(id: 'no_such_id').readonly? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: 'no_such_id').readonly? }.to raise_unknown_object_exception
     end
   end
 
@@ -213,15 +213,15 @@ describe "TextField" do
     end
 
     it "raises ObjectReadOnlyException if the object is read only" do
-      expect { browser.text_field(id: "new_user_code").append("Append This") }.to raise_error(Watir::Exception::ObjectReadOnlyException)
+      expect { browser.text_field(id: "new_user_code").append("Append This") }.to raise_object_read_only_exception
     end
 
     it "raises ObjectDisabledException if the object is disabled" do
-      expect { browser.text_field(name: "new_user_species").append("Append This") }.to raise_error(Watir::Exception::ObjectDisabledException)
+      expect { browser.text_field(name: "new_user_species").append("Append This") }.to raise_object_disabled_exception
     end
 
     it "raises UnknownObjectException if the object doesn't exist" do
-      expect { browser.text_field(name: "no_such_name").append("Append This") }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(name: "no_such_name").append("Append This") }.to raise_unknown_object_exception
     end
   end
 
@@ -234,12 +234,12 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(id: "no_such_id").clear }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: "no_such_id").clear }.to raise_unknown_object_exception
     end
 
     bug "https://bugzilla.mozilla.org/show_bug.cgi?id=1200366", :firefox do
       it "raises ObjectReadOnlyException if the object is read only" do
-        expect { browser.text_field(id: "new_user_code").clear }.to raise_error(Watir::Exception::ObjectReadOnlyException)
+        expect { browser.text_field(id: "new_user_code").clear }.to raise_object_read_only_exception
       end
     end
   end
@@ -261,7 +261,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(name: "no_such_name").value = 'yo' }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(name: "no_such_name").value = 'yo' }.to raise_unknown_object_exception
     end
   end
 
@@ -297,7 +297,7 @@ describe "TextField" do
     end
 
     it "raises UnknownObjectException if the text field doesn't exist" do
-      expect { browser.text_field(id: "no_such_id").set('secret') }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.text_field(id: "no_such_id").set('secret') }.to raise_unknown_object_exception
     end
   end
 end

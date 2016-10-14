@@ -55,7 +55,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(name: 'no_such_name').class_name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(name: 'no_such_name').class_name }.to raise_unknown_object_exception
     end
   end
 
@@ -65,7 +65,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(index: 1337).id }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(index: 1337).id }.to raise_unknown_object_exception
     end
   end
 
@@ -75,7 +75,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(index: 1337).name }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(index: 1337).name }.to raise_unknown_object_exception
     end
   end
 
@@ -86,7 +86,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(index: 1337).multiple? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(index: 1337).multiple? }.to raise_unknown_object_exception
     end
   end
 
@@ -100,7 +100,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(index: 1337).value }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(index: 1337).value }.to raise_unknown_object_exception
     end
   end
 
@@ -124,7 +124,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select_list doesn't exist" do
-      expect { browser.select_list(name: 'no_such_name').enabled? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(name: 'no_such_name').enabled? }.to raise_unknown_object_exception
     end
   end
 
@@ -138,7 +138,7 @@ describe "SelectList" do
     end
 
     it "should raise UnknownObjectException when the select list does not exist" do
-      expect { browser.select_list(index: 1337).disabled? }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(index: 1337).disabled? }.to raise_unknown_object_exception
     end
   end
 
@@ -160,7 +160,7 @@ describe "SelectList" do
 
   describe "#selected_options" do
     it "should raise UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(name: 'no_such_name').selected_options }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(name: 'no_such_name').selected_options }.to raise_unknown_object_exception
     end
 
     it "gets the currently selected item(s)" do
@@ -186,7 +186,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the select list doesn't exist" do
-      expect { browser.select_list(name: 'no_such_name').clear }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(name: 'no_such_name').clear }.to raise_unknown_object_exception
     end
 
     not_compliant_on :safari do
@@ -244,7 +244,7 @@ describe "SelectList" do
     end
 
     it "raises UnknownObjectException if the option doesn't exist" do
-      expect { browser.select_list(name: 'new_user_country').selected?('missing_option') }.to raise_error(Watir::Exception::UnknownObjectException)
+      expect { browser.select_list(name: 'new_user_country').selected?('missing_option') }.to raise_unknown_object_exception
     end
   end
 
@@ -347,7 +347,7 @@ describe "SelectList" do
     end
 
     it "raises ObjectDisabledException if the option is disabled" do
-      expect { browser.select_list(name: "new_user_languages").select("Russian") }.to raise_error(Watir::Exception::ObjectDisabledException)
+      expect { browser.select_list(name: "new_user_languages").select("Russian") }.to raise_object_disabled_exception
     end
 
     it "raises a TypeError if argument is not a String, Regexp or Numeric" do
