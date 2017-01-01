@@ -1,5 +1,6 @@
 # encoding: utf-8
 require File.expand_path("../spec_helper", __FILE__)
+require File.expand_path("../image_spec_helper", __FILE__)
 
 describe "Image" do
 
@@ -159,6 +160,26 @@ describe "Image" do
         expect { browser.image(alt: 'no_such_image').loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
         expect { browser.image(index: 1337).loaded? }.to raise_error(Watir::Exception::UnknownObjectException)
       end
+    end
+  end
+
+  describe "#to_png_base64" do
+    it "return png image similar to the original png" do
+      src_file = "#{WatirSpec.files}/images/circle.png".sub("file://", '')
+      enc_base64 = browser.image(:alt, 'circle').to_png_base64
+      expect(enc_base64).to be_similar_to_file(src_file)
+    end
+
+    it "return png image similar to the original gif" do
+      src_file = "#{WatirSpec.files}/images/1.gif".sub("file://", '')
+      enc_base64 = browser.image(:alt, '1').to_png_base64
+      expect(enc_base64).to be_similar_to_file(src_file)
+    end
+
+    it "return png image similar to the original jpg with mse <= 0.0000001" do
+      src_file = "#{WatirSpec.files}/images/jpg.jpg".sub("file://", '')
+      enc_base64 = browser.image(:alt, 'jpg').to_png_base64
+      expect(enc_base64).to be_similar_to_file(src_file).with_mse_less_then(0.0000001)
     end
   end
 
