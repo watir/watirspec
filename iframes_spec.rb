@@ -30,6 +30,24 @@ describe "IFrames" do
     it "returns the iframe at the given index" do
       expect(browser.iframes[0].id).to eq "iframe_1"
     end
+
+    it "handles race conditions" do
+      iframes_list = browser.iframes
+
+      # Simulates a race condition where the first collection call returns fewer than actual number of iframes
+      # If all_elements is called before elements, it is possible for the matching elements to have more iframes than
+      # the total number of iframes, which results in setting an iframe with an index of nil
+
+      # This test fails if all_elements is called first and separately mocked out with this strategy
+      allow(iframes_list).to receive(:elements) do
+        @elements = ElementLocator.new(
+            browser.driver,
+            {tag_name: 'iframe'},
+            IFrame.attribute_list
+        ).locate_all[0, 1]
+      end
+      expect {iframes_list.find { |iframe| iframe.id == "iframe_2"}}.to_not raise_exception(TypeError)
+    end
   end
 
   describe "#each" do
